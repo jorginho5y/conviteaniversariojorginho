@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Convite de Aniversário - Jorge Gabriel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fdf6f0;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1 {
+      color: #d96d00;
+    }
+    form {
+      margin-top: 2rem;
+    }
+    input[type="text"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+      width: 80%;
+      max-width: 300px;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.7rem 1.2rem;
+      font-size: 1rem;
+      background-color: #d96d00;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .hidden {
+      display: none;
+    }
+    .pix-box {
+      margin-top: 2rem;
+      background: #fff3e0;
+      padding: 1.5rem;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Convite de Aniversário 🎉</h1>
+    <p>Você está convidado para comemorar o aniversário de <strong>Jorge Gabriel</strong>!</p>
+    <p><strong>📅 28 de julho de 2025</strong><br>
+       <strong>📍 Celebre Recepções</strong></p>
+
+    <form id="rsvpForm">
+      <p>Confirme sua presença:</p>
+      <input type="text" id="name" placeholder="Digite seu nome" required /> <br />
+      <button type="submit">Confirmar Presença</button>
+    </form>
+
+    <div class="pix-box hidden" id="thanksBox">
+      <h2>Obrigado por confirmar! 🎁</h2>
+      <p>Se quiser presentear, o Jorge Gabriel vai adorar receber um PIX 💖</p>
+      <p><strong>Chave PIX:</strong> <span id="pixKey">jhonatagabriel166@gmail.com</span></p>
+      <button onclick="copyPix()">Copiar chave PIX</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('rsvpForm');
+    const nameInput = document.getElementById('name');
+    const thanksBox = document.getElementById('thanksBox');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = nameInput.value.trim();
+      if (!name) return alert("Por favor, digite seu nome.");
+
+      // Envia para Google Sheets
+      try {
+        await fetch('https://script.google.com/macros/s/AKfycbyxwS4guOrPGZi2S7J5dcS6zdnVgBESiqklU-u3lkySgftDlzkM7jaYpTtoMuPc6BEe/exec', {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name })
+        });
+      } catch (error) {
+        console.error("Erro ao enviar ao Google Sheets:", error);
+      }
+
+      form.classList.add('hidden');
+      thanksBox.classList.remove('hidden');
+    });
+
+    function copyPix() {
+      const key = document.getElementById('pixKey').innerText;
+      navigator.clipboard.writeText(key);
+      alert('Chave PIX copiada!');
+    }
+  </script>
+</body>
+</html>

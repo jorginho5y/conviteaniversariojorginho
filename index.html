@@ -24,6 +24,8 @@
       padding: 1.5rem;
       background: rgba(0, 0, 0, 0.6);
       border-radius: 10px;
+      position: relative; /* Garante que o conteúdo fique acima dos confetes */
+      z-index: 2;
     }
     h1 {
       font-size: 2rem;
@@ -125,7 +127,8 @@
     <h1>Convite de Aniversário 🎉</h1>
     <p>Você está convidado para comemorar o aniversário de <strong>Jorge Gabriel</strong>!</p>
     <p><strong>📅 28 de julho</strong><br>
-       <strong>📍 Celebre Recepções</strong></p>
+       <strong>📍 Celebre Recepções</strong><br> <!-- Linha modificada aqui -->
+       <strong>⏰ 18:00</strong></p> <!-- Linha adicionada aqui -->
     
     <!-- Contagem regressiva adicionada aqui -->
     <div class="countdown">
@@ -175,9 +178,52 @@
     </div>
   </div>
 
+  <!-- Biblioteca para efeito de confetes -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  
   <script>
-    // Contagem regressiva para 28 de julho de 2025
-    const countdownDate = new Date("July 28, 2025 00:00:00").getTime();
+    // Função para disparar confetes
+    function fireConfetti() {
+      // Configurações básicas
+      const defaults = {
+        startVelocity: 30,
+        spread: 360,
+        ticks: 60,
+        zIndex: 0,
+        gravity: 0.5,
+        decay: 0.94,
+        scalar: 1
+      };
+      
+      // Dispara confetes da parte inferior esquerda
+      confetti({
+        ...defaults,
+        particleCount: 50,
+        angle: 60,
+        origin: { x: 0, y: 1 }
+      });
+      
+      // Dispara confetes da parte inferior direita
+      confetti({
+        ...defaults,
+        particleCount: 50,
+        angle: 120,
+        origin: { x: 1, y: 1 }
+      });
+      
+      // Dispara confetes do centro
+      confetti({
+        ...defaults,
+        particleCount: 100,
+        origin: { x: 0.5, y: 0.5 }
+      });
+    }
+    
+    // Dispara confetes quando a página carrega
+    window.addEventListener('load', fireConfetti);
+    
+    // Contagem regressiva para 28 de julho de 2025 às 18:00
+    const countdownDate = new Date("July 28, 2025 18:00:00").getTime();
     
     function updateCountdown() {
       const now = new Date().getTime();

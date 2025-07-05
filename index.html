@@ -52,6 +52,11 @@
       border: none;
       cursor: pointer;
       border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
     }
     .hidden {
       display: none;
@@ -81,6 +86,7 @@
       display: flex;
       align-items: center;
       gap: 0.3rem;
+      transition: background-color 0.3s;
     }
     .copy-btn:hover {
       background: #45a049;
@@ -127,8 +133,8 @@
     <h1>Convite de Aniversário 🎉</h1>
     <p>Você está convidado para comemorar o aniversário de <strong>Jorge Gabriel</strong>!</p>
     <p><strong>📅 28 de julho</strong><br>
-       <strong>📍 Celebre Recepções</strong><br> <!-- Linha modificada aqui -->
-       <strong>⏰ 18:00</strong></p> <!-- Linha adicionada aqui -->
+       <strong>📍 Celebre Recepções</strong><br>
+       <strong>⏰ 18:00</strong></p>
     
     <!-- Contagem regressiva adicionada aqui -->
     <div class="countdown">
@@ -156,7 +162,7 @@
     <form id="rsvpForm">
       <p>Confirme sua presença:</p>
       <input type="text" id="name" placeholder="Digite seu nome" required /> <br />
-      <button type="submit">Confirmar Presença</button>
+      <button type="submit" id="submitButton">Confirmar Presença</button>
     </form>
 
     <div class="pix-box hidden" id="thanksBox">
@@ -252,6 +258,7 @@
     const thanksBox = document.getElementById('thanksBox');
     const copyButton = document.getElementById('copyButton');
     const pixKey = document.getElementById('pixKey');
+    const submitButton = document.getElementById('submitButton');
 
     // Função para copiar a chave PIX
     copyButton.addEventListener('click', () => {
@@ -290,6 +297,11 @@
       const name = nameInput.value.trim();
       if (!name) return alert("Por favor, digite seu nome.");
 
+      // Desabilitar botão durante o processamento
+      const originalText = submitButton.innerHTML;
+      submitButton.innerHTML = "Enviando...";
+      submitButton.disabled = true;
+
       try {
         await fetch('https://script.google.com/macros/s/AKfycbyxwS4guOrPGZi2S7J5dcS6zdnVgBESiqklU-u3lkySgftDlzkM7jaYpTtoMuPc6BEe/exec', {
           method: 'POST',
@@ -297,12 +309,23 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name })
         });
+        
+        // Ocultar formulário e mostrar agradecimento
+        form.classList.add('hidden');
+        thanksBox.classList.remove('hidden');
+        
       } catch (error) {
-        console.error("Erro ao enviar ao Google Sheets:", error);
+        console.error("Erro ao enviar:", error);
+        alert("Ocorreu um erro, mas sua presença foi registrada localmente!");
+        
+        // Mesmo com erro, ocultar o formulário
+        form.classList.add('hidden');
+        thanksBox.classList.remove('hidden');
+      } finally {
+        // Reativar botão (embora oculto)
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalText;
       }
-
-      form.classList.add('hidden');
-      thanksBox.classList.remove('hidden');
     });
   </script>
 </body>

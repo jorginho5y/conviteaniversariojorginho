@@ -165,9 +165,10 @@
       <button type="submit" id="submitButton">Confirmar Presença</button>
     </form>
 
-    <div class="pix-box hidden" id="thanksBox">
-      <h2>Obrigado por confirmar!</h2>
-      <p>Como sugestão de presente, Jorge Gabriel vai adorar receber um PIX 💖</p>
+    <!-- Seção do PIX agora visível desde o início -->
+    <div class="pix-box">
+      <h3>Sugestão de Presente 🎁</h3>
+      <p>Jorge Gabriel vai adorar receber um PIX como presente 💖</p>
       <div class="pix-key-container">
         <strong>Chave PIX:</strong>
         <span id="pixKey">0af1eaa1-3d0e-477e-8b47-8baf8f105dc0</span>
@@ -181,6 +182,13 @@
       </div>
       <p>Escaneie o QR Code abaixo para fazer um PIX:</p>
       <img src="pix_qrcode.jpg" alt="QR Code PIX" style="max-width: 100%; border-radius: 8px;">
+    </div>
+
+    <!-- Caixa de agradecimento que aparece após a confirmação -->
+    <div class="pix-box hidden" id="thanksBox">
+      <h2>Obrigado por confirmar!</h2>
+      <p>Sua presença foi registrada com sucesso!</p>
+      <p>Não se esqueça do presente PIX 💖</p>
     </div>
   </div>
 
